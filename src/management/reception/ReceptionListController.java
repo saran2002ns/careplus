@@ -1,6 +1,5 @@
 package management.reception;
 
-import java.util.Map;
 
 import base.Base;
 import model.Patient;
