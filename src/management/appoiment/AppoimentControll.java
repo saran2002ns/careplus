@@ -10,65 +10,93 @@ import model.Doctor;
 import repository.Db;
 
 class AppoimentControll {
-        Db dataBase = Db.getInstance();
-         private final Scanner scanner = new Scanner(System.in);
+    Db dataBase = Db.getInstance();
+    private final Scanner scanner = new Scanner(System.in);
+
     public AppoimentControll(AppoimentView appoimentView) {}
 
     public void sheduledForPatient() {
-        String name =getName();
-        Map<Integer,Appoiment> appoiments = dataBase.getAppoinments();
-        for (Map.Entry<Integer,Appoiment> appoimentEntry : appoiments.entrySet()) {
-            if (dataBase.getPatient(appoimentEntry.getValue().getPatientId()).getName().equals(name)) {
-                 System.out.println(appoimentEntry.getValue());
+        String name = getName();
+        Map<Integer, Appoiment> appoiments = dataBase.getAppoinments();
+        boolean found = false;
+        for (Map.Entry<Integer, Appoiment> entry : appoiments.entrySet()) {
+            if (dataBase.getPatient(entry.getValue().getPatientId()).getName().equalsIgnoreCase(name)) {
+                System.out.println(entry.getValue());
+                found = true;
             }
-           
+        }
+        if (!found) {
+            System.out.println("NO APPOINTMENTS FOUND FOR THIS PATIENT.");
         }
     }
 
     public void sheduledForDocters() {
-        Map<Integer,Appoiment> appoiments = dataBase.getAppoinments();
-        for (Map.Entry<Integer,Appoiment> appoimentEntry : appoiments.entrySet()) {
-            System.out.println(appoimentEntry.getValue());
+        Map<Integer, Appoiment> appoiments = dataBase.getAppoinments();
+        if (appoiments.isEmpty()) {
+            System.out.println("NO SCHEDULED APPOINTMENTS FOUND.");
+            return;
+        }
+        for (Map.Entry<Integer, Appoiment> entry : appoiments.entrySet()) {
+            System.out.println(entry.getValue());
         }
     }
 
     public void sheduledForDocter() {
-        
-       Map<Integer,Appoiment> appoiments = dataBase.getAppoinments();
-       Map<Integer,Doctor> docters = dataBase.getDocters();
-       int id=0;
-       while (true) {
-                  System.out.print("Enter id : ");
-                  id = scanner.nextInt();
-                  if (!docters.containsKey(id)) {
-                    System.out.println(" INVALID ID ! ");
-                  }else break;
-       }
-        for (Map.Entry<Integer,Appoiment> appoimentEntry : appoiments.entrySet()) {
-           if (id==appoimentEntry.getValue().getDocterId()) 
-            System.out.println(appoimentEntry.getValue());
+        Map<Integer, Appoiment> appoiments = dataBase.getAppoinments();
+        Map<Integer, Doctor> doctors = dataBase.getDocters();
+        int id;
+        while (true) {
+            try {
+                System.out.print("Enter doctor ID: ");
+                id = scanner.nextInt();
+                scanner.nextLine();
+                if (!doctors.containsKey(id)) {
+                    System.out.println("INVALID DOCTOR ID. PLEASE TRY AGAIN.");
+                } else {
+                    break;
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+                System.out.println("INVALID INPUT. PLEASE ENTER A NUMBER.");
+            }
         }
-       
+        boolean found = false;
+        for (Map.Entry<Integer, Appoiment> entry : appoiments.entrySet()) {
+            if (entry.getValue().getDocterId() == id) {
+                System.out.println(entry.getValue());
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("NO APPOINTMENTS FOUND FOR THIS DOCTOR.");
+        }
     }
 
     public void freeDocters() {
-        Map<Integer,Doctor> docters=dataBase.getDocters();
-        for(Map.Entry<Integer,Doctor> docter : docters.entrySet()){
-            System.out.print(docter+" -> ");
-            Map<LocalDate,List<String>> slots =docter.getValue().getAvalabilSlot();
-            for(Map.Entry<LocalDate,List<String>> slot : slots.entrySet() ){
-                System.out.print("date : "+slot.getKey()+" time : ");
-                for (String time : slot.getValue()) {
-                    System.out.print(time+"  ");
+        Map<Integer, Doctor> doctors = dataBase.getDocters();
+        if (doctors.isEmpty()) {
+            System.out.println("NO DOCTORS FOUND.");
+            return;
+        }
+        for (Map.Entry<Integer, Doctor> doctorEntry : doctors.entrySet()) {
+            Doctor doctor = doctorEntry.getValue();
+            Map<LocalDate, List<String>> slots = doctor.getAvalabilSlot();
+            if (!slots.isEmpty()) {
+                System.out.print(doctor + " -> ");
+                for (Map.Entry<LocalDate, List<String>> slot : slots.entrySet()) {
+                    System.out.print("DATE: " + slot.getKey() + " | TIME: ");
+                    for (String time : slot.getValue()) {
+                        System.out.print(time + " | ");
+                    }
+                    System.out.println();
                 }
+                System.out.println();
             }
         }
     }
 
     private String getName() {
-       System.out.print("Enter Your name : ");
-       String name= scanner.nextLine();
-       return name.trim();
+        System.out.print("Enter patient name: ");
+        return scanner.nextLine().trim();
     }
-    
 }

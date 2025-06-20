@@ -10,114 +10,130 @@ public class ReceptionListView {
     public static ReceptionListView view;
     private ReceptionListController controller;
     private final Scanner scanner = new Scanner(System.in);
-    private ReceptionListView(){
-        controller=new ReceptionListController(this);
+
+    private ReceptionListView() {
+        controller = new ReceptionListController(this);
     }
-    public static ReceptionListView getInstance(){
-        if(view==null){
+
+    public static ReceptionListView getInstance() {
+        if (view == null) {
             view = new ReceptionListView();
         }
         return view;
     }
-    public void init(){
-       desk();
+
+    public void init() {
+        desk();
     }
+
     private void desk() {
         while (true) {
-       System.out.println("---- ADMIN -----");
-       System.out.println();
-       System.out.println("1.Add Patient");
-       System.out.println("2.Search Patient");
-        System.out.println("3.return");
-        System.out.print("Enter your choice : ");
+            System.out.println();
+            System.out.println("---- RECEPTION DESK ----\n");
+            System.out.println("1. ADD PATIENT");
+            System.out.println("2. SEARCH PATIENT");
+            System.out.println("3. RETURN");
+            System.out.print("Enter your choice: ");
 
-         try {
-            int var1 = scanner.nextInt();
-            scanner.nextLine();
-            switch (var1) {
-               case 1:addPatient();break;
-               case 2:searchPatient();break;
-               case 3:
-                 return;
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+                switch (choice) {
+                    case 1 -> addPatient();
+                    case 2 -> searchPatient();
+                    case 3 -> { return; }
+                    default -> System.out.println("INVALID CHOICE! PLEASE TRY AGAIN.");
+                }
+            } catch (Exception e) {
+                scanner.nextLine();
+                System.out.println("INVALID INPUT! PLEASE ENTER A NUMBER.");
             }
-         } catch (Exception var2) {
-            this.scanner.nextLine();
-            System.out.println("Invalid input try again !");
-         }
-      }
+        }
     }
+
     private void searchPatient() {
-     String name = getName();
-     controller.searchPatientByName(name);
-   }
-   private void addPatient() {
-        String name =getName();
-        byte age =getAge();
-        String number =getNumber();
+        String name = getName();
+        controller.searchPatientByName(name);
+    }
+
+    private void addPatient() {
+        String name = getName();
+        byte age = getAge();
+        String number = getNumber();
         String date = getDate();
         String time = getTime();
         String address = getAddress();
         String gender = getGender();
-        controller.addPatient(name,age,number,date,time,gender,address);
-   }
+
+        controller.addPatient(name, age, number, date, time, gender, address);
+    }
+
     private String getTime() {
         List<String> validTimes = Arrays.asList("9:00", "11:00", "14:00", "19:00");
         do {
-            System.out.println("Choice should be: [ 9 || 11 || 14 || 19 ]");
-            System.out.print("Enter your time: ");
+            System.out.println("Choice should be: [9:00, 11:00, 14:00, 19:00]");
+            System.out.print("Enter your preferred time: ");
             String input = scanner.nextLine().trim();
             if (validTimes.contains(input)) {
                 return input;
             } else {
-                System.out.println("Invalid time. Please enter one of the valid options.");
+                System.out.println("INVALID TIME! PLEASE ENTER A VALID SLOT.");
             }
-        }while (true);
+        } while (true);
     }
 
     private String getDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-         do{
-            System.out.println("Date should be in the format: dd-MM-yyyy");
-            System.out.print("Enter your date: ");
+        do {
+            System.out.println("Date format should be: dd-MM-yyyy");
+            System.out.print("Enter the appointment date: ");
             String input = scanner.nextLine().trim();
             try {
-                LocalDate.parse(input, formatter); 
+                LocalDate.parse(input, formatter);
                 return input;
             } catch (Exception e) {
-                System.out.println("Invalid date format. Please try again.");
+                System.out.println("INVALID DATE FORMAT! PLEASE TRY AGAIN.");
             }
-        }while (true);
+        } while (true);
     }
-     private String getName() {
-       System.out.print("Enter Your name : ");
-       String name= scanner.nextLine();
-       return name.trim();
+
+    private String getName() {
+        System.out.print("Enter patient name: ");
+        return scanner.nextLine().trim();
     }
-      private byte getAge() {
-       System.out.print("Enter Your age : ");
-       byte age= Byte.parseByte(scanner.nextLine());
-       return age;
+
+    private byte getAge() {
+        while (true) {
+            try {
+                System.out.print("Enter patient age: ");
+                return Byte.parseByte(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("INVALID AGE! PLEASE ENTER A NUMBER.");
+            }
+        }
     }
-      private String getAddress() {
-          System.out.print("Enter Your Address ");
-          String adress= scanner.nextLine();
-          return adress.trim();
-       }
-      private String getGender() {
-          System.out.print("Enter Your Gender [M/F] : ");
-          String gender= scanner.nextLine();
-          return gender.trim();
-       }
+
+    private String getAddress() {
+        System.out.print("Enter patient address: ");
+        return scanner.nextLine().trim();
+    }
+
+    private String getGender() {
+        System.out.print("Enter gender [M/F]: ");
+        return scanner.nextLine().trim();
+    }
 
     private String getNumber() {
-        String number="";
-        do{
-            System.out.print("Enter Your number :");
-            number=scanner.nextLine();
-            if(!number.matches("\\d{10}")){
-                System.out.println("Not a number  put a 10 digit number " );
-            }else break;
-        }while(true);
+        String number;
+        do {
+            System.out.print("Enter patient phone number: ");
+            number = scanner.nextLine().trim();
+            if (!number.matches("\\d{10}")) {
+                System.out.println("INVALID NUMBER! PLEASE ENTER A 10-DIGIT NUMBER.");
+            } else {
+                break;
+            }
+        } while (true);
         return number;
     }
 }
