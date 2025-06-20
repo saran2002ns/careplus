@@ -1,9 +1,7 @@
 package login;
 
 import java.util.Scanner;
-
 import base.Base;
-import repository.Db;
 
 public class LoginView extends Base {
     private final Scanner scanner;
@@ -16,7 +14,6 @@ public class LoginView extends Base {
       showDesk();
     }
     private void showDesk() {
-        System.out.println(Db.getInstance().getDocters());
         while (true) {
               System.out.println("----- DESK -----");
               System.out.println();

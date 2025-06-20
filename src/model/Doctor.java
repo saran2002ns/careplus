@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +16,15 @@ public class Doctor extends ModelUtil{
 	        this.name = name;
 	        this.age = age;
 	        this.number = number;
-	        this.avalabilSlot.put(convertStringToDate("02-02-2024"), new ArrayList<>(List.of("9","11","14","19")));
-	        this.avalabilSlot.put(convertStringToDate("03-02-2024"), new ArrayList<>(List.of("9","11","14","19")));
-	        this.avalabilSlot.put(convertStringToDate("04-02-2024"), new ArrayList<>(List.of("9","11","14","19")));
+            this.avalabilSlot=new HashMap<>();
+	        this.avalabilSlot.put(convertStringToDate("02-02-2024"), new ArrayList<>(List.of("9:00","11:00","14:00","19:00")));
+	        this.avalabilSlot.put(convertStringToDate("03-02-2024"), new ArrayList<>(List.of("9:00","11:00","14:00","19:00")));
+	        this.avalabilSlot.put(convertStringToDate("04-02-2024"), new ArrayList<>(List.of("9:00","11:00","14:00","19:00")));
 	 }
     
 	 public Doctor(int id,String name, byte age, String number) {
 	        this.id=id;
+             this.avalabilSlot=new HashMap<>();
 	        this.name = name;
 	        this.age = age;
 	        this.number = number;

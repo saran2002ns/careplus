@@ -22,6 +22,7 @@ public class AdminView extends Base{
     }
     private void desk() {
         while (true) {
+            System.out.println();
             System.out.println("---- ADMIN -----");
             System.out.println();
             System.out.println("1.APPOINMENT SHEDULING");
@@ -62,12 +63,13 @@ private void removeDocter() {
 }
 private void manageReceptionList() {
       while (true) {
+          System.out.println();
           System.out.println("---- MANAGE RECEPTION LIST -----");
-       System.out.println();
-       System.out.println("1.ADD RECEPTIONLIST");
-       System.out.println("2.REMOVE RECEPTIONLIST");
-        System.out.println("3.RETURN ");
-        System.out.print("Enter your choice : ");
+          System.out.println();
+          System.out.println("1.ADD RECEPTIONLIST");
+          System.out.println("2.REMOVE RECEPTIONLIST");
+          System.out.println("3.RETURN ");
+          System.out.print("Enter your choice : ");
 
          try {
             int choice = scanner.nextInt();
@@ -85,23 +87,35 @@ private void manageReceptionList() {
         
     }
     private void removeReceptionList() {
-      int id =getId();
-      controller.removeReceptionList(id);
+      int id;
+       do{ 
+            try {
+               
+              boolean bool=controller.printreceptionlist();
+              if (bool) {
+               System.out.println("No ReceptionList Found! ");
+               return;
+              }
+              System.out.print("Enter id : ");
+                id= scanner.nextInt();
+                
+               if (!controller.searchReceptionList(id)) {
+                  System.out.println("IN VALID ID !");
+                  System.out.println(" IF YOU WANT TO EXIT ENTER EXIT ! ");
+               }else break;
+              
+            } catch (Exception e) {
+               scanner.nextLine();
+               System.out.println("Invalid data");
+               return;
+            }
+            
+        }while(true);
+         controller.removeReceptionListById(id);
+         scanner.nextLine();
     }
-    private int getId(){
-      int id=0;
-       while (true) {
-           try {
-            id= scanner.nextInt();
-            break;
-           } catch (Exception e) {
-           System.out.println("Enter valid input ");
-           }
-        }
-        return id;
-    }
+    
     private void addRecptionList() {
-      
       String name = getName();
       String password=getPassword();
       String number = getNumber();
@@ -109,18 +123,20 @@ private void manageReceptionList() {
       System.out.println(" ADDED SUCESSFULLY");
     }
     private void addDocter() {
-    String name =getName();
-    byte age =getAge();
-    String number =getNumber();
-    controller.addDocter(name,age,number);
+      System.out.println("-------- ADD DOCTOR --------");
+      System.out.println();
+      String name =getName();
+      byte age =getAge();
+      String number =getNumber();
+      controller.addDocter(name, age, number);
    }
      private String getName() {
-       System.out.println("Enter Your name ");
+       System.out.print("Enter Your name : ");
        String name= scanner.nextLine();
        return name.trim();
     }
       private String getPassword() {
-       System.out.println("Enter Your password ");
+       System.out.print("Enter Your password :  ");
        String password= scanner.nextLine();
        return password.trim();
     }
@@ -128,7 +144,7 @@ private void manageReceptionList() {
     private String getNumber() {
         String number="";
         do{
-            System.out.print("Enter Your number :");
+            System.out.print("Enter Your number : ");
             number=scanner.nextLine();
             if(!number.matches("\\d{10}")){
                 System.out.println("Not a number  put a 10 digit number " );
@@ -137,8 +153,16 @@ private void manageReceptionList() {
         return number;
     }
     private byte getAge() {
-       System.out.println("Enter Your age : ");
-       byte age= Byte.parseByte(scanner.nextLine());
+      byte age;
+      do{
+         try {
+         System.out.print("Enter Your age : ");
+         age=(byte) Byte.parseByte(scanner.nextLine());
+         break;
+         } catch (Exception e) {
+            System.out.println("invalid data ! ");
+         }
+      }while(true);
        return age;
     }
    

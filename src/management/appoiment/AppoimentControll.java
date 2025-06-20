@@ -38,7 +38,7 @@ class AppoimentControll {
        Map<Integer,Doctor> docters = dataBase.getDocters();
        int id=0;
        while (true) {
-                  System.out.println("Enter id : ");
+                  System.out.print("Enter id : ");
                   id = scanner.nextInt();
                   if (!docters.containsKey(id)) {
                     System.out.println(" INVALID ID ! ");
@@ -54,12 +54,10 @@ class AppoimentControll {
     public void freeDocters() {
         Map<Integer,Doctor> docters=dataBase.getDocters();
         for(Map.Entry<Integer,Doctor> docter : docters.entrySet()){
-            System.out.println(docter+" -> ");
+            System.out.print(docter+" -> ");
             Map<LocalDate,List<String>> slots =docter.getValue().getAvalabilSlot();
-            if(slots.isEmpty())
-            System.out.print(" no dates !");
             for(Map.Entry<LocalDate,List<String>> slot : slots.entrySet() ){
-                System.out.println("date : "+slot.getKey()+" time : ");
+                System.out.print("date : "+slot.getKey()+" time : ");
                 for (String time : slot.getValue()) {
                     System.out.print(time+"  ");
                 }
@@ -68,7 +66,7 @@ class AppoimentControll {
     }
 
     private String getName() {
-       System.out.println("Enter Your name ");
+       System.out.print("Enter Your name : ");
        String name= scanner.nextLine();
        return name.trim();
     }

@@ -1,5 +1,9 @@
 package management.reception;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ReceptionListView {
@@ -44,7 +48,7 @@ public class ReceptionListView {
     }
     private void searchPatient() {
      String name = getName();
-     controller.searchPatient(name);
+     controller.searchPatientByName(name);
    }
    private void addPatient() {
         String name =getName();
@@ -56,33 +60,51 @@ public class ReceptionListView {
         String gender = getGender();
         controller.addPatient(name,age,number,date,time,gender,address);
    }
-   private String getTime() {
-     System.out.println("Enter Your time ");
-       String name= scanner.nextLine();
-       return name.trim();
-  }
-   private String getDate() {
-      System.out.println("Enter Your date ");
-       String name= scanner.nextLine();
-       return name.trim();
-  }
+    private String getTime() {
+        List<String> validTimes = Arrays.asList("9:00", "11:00", "14:00", "19:00");
+        do {
+            System.out.println("Choice should be: [ 9 || 11 || 14 || 19 ]");
+            System.out.print("Enter your time: ");
+            String input = scanner.nextLine().trim();
+            if (validTimes.contains(input)) {
+                return input;
+            } else {
+                System.out.println("Invalid time. Please enter one of the valid options.");
+            }
+        }while (true);
+    }
+
+    private String getDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+         do{
+            System.out.println("Date should be in the format: dd-MM-yyyy");
+            System.out.print("Enter your date: ");
+            String input = scanner.nextLine().trim();
+            try {
+                LocalDate.parse(input, formatter); 
+                return input;
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please try again.");
+            }
+        }while (true);
+    }
      private String getName() {
-       System.out.println("Enter Your name ");
+       System.out.print("Enter Your name : ");
        String name= scanner.nextLine();
        return name.trim();
     }
       private byte getAge() {
-       System.out.println("Enter Your age : ");
+       System.out.print("Enter Your age : ");
        byte age= Byte.parseByte(scanner.nextLine());
        return age;
     }
       private String getAddress() {
-          System.out.println("Enter Your Address ");
+          System.out.print("Enter Your Address ");
           String adress= scanner.nextLine();
           return adress.trim();
        }
       private String getGender() {
-          System.out.println("Enter Your Gender [M/F] : ");
+          System.out.print("Enter Your Gender [M/F] : ");
           String gender= scanner.nextLine();
           return gender.trim();
        }

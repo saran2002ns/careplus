@@ -22,15 +22,16 @@ public class AppoimentView extends Base{
    }
     public void list() {
       while (true) {
-          System.out.println("---- ADMIN -----");
        System.out.println();
-       System.out.println("1.VIEW SHEWING FOR PATIENT");
-       System.out.println("2.VIEW SHEWING FOR DOCTERS");
-       System.out.println("3.VIEW SHEWING FOR A SPECFIC DOCTER");
-       System.out.println("4.VIEW FREE FOR DOCTERS");
-        System.out.println("5.Return");
-        System.out.println("6.Exit");
-        System.out.print("Enter your choice : ");
+       System.out.println("---- SCHEDULING -----");
+       System.out.println();
+       System.out.println("1.VIEW SCHEDULING FOR PATIENT");
+       System.out.println("2.VIEW SCHEDULING FOR DOCTERS");
+       System.out.println("3.VIEW SCHEDULING FOR A SPECFIC DOCTER");
+       System.out.println("4.VIEW FREE DOCTERS");
+       System.out.println("5.Return");
+       System.out.println("6.Exit");
+       System.out.print("Enter your choice : ");
 
          try {
             int choice = scanner.nextInt();
